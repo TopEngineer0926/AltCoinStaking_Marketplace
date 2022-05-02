@@ -7,24 +7,59 @@ import "../styles/NFTDetail.css";
 import { ColorExtractor } from "react-color-extractor";
 import Button from "../components/base/Button";
 import { FaEthereum } from "react-icons/fa";
-import { AiOutlineHeart, AiFillHeart, AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
+import {
+  AiOutlineHeart,
+  AiFillHeart,
+  AiOutlineArrowLeft,
+  AiOutlineArrowRight,
+} from "react-icons/ai";
 import { useMobile } from "../hooks/isMobile";
 import { hotDropsData } from "../constants/MockupData";
 import NFTCard from "../components/NFTCard";
 import { useARStatus } from "../hooks/isARStatus";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Box from "@material-ui/core/Box";
+import PropTypes from "prop-types";
+import { Grid } from "@material-ui/core";
 
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
 
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box>{children}</Box>}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
+};
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
 
 const NFTDetail = () => {
   const isMobile = useMobile();
 
   const [colors, setColors] = useState([]);
+  const [value, setValue] = React.useState(0);
 
-  const [isLike, setIsLike] = useState(false);
-  
-  
-
-  const like = () => setIsLike(!isLike);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   const getColors = (colors) => {
     setColors((c) => [...c, ...colors]);
@@ -39,8 +74,6 @@ const NFTDetail = () => {
   }, [state]);
 
   const isARSupport = useARStatus(state.item.src);
-
-  
 
   //!! aciklama karakter sayisi sinirlanmali.
   //!! scroll sorununa cozum bulunmali.
@@ -67,70 +100,79 @@ const NFTDetail = () => {
                   auto-rotate
                   src={state.item.src}
                 >
-                  {" "}
                 </model-viewer>
               ) : (
                 <>
-                  {" "}
                   <ColorExtractor getColors={getColors}>
                     <img id="detail-image" src={state.item.src} />
                   </ColorExtractor>
                 </>
               )}
 
-              <div id="detail-info" style={{}}>
-                <div id="detail-info-container">
-                  <p id="collection"> Level : {state.item.level} </p>
-                  <p id="name"> Name : {state.item.name} </p>
-                  <p id="description"> Owned by : {state.item.owner.slice(0,5) + "..." + state.item.owner.slice(38,42)} </p>
-                  <p id="description"> {state.item.description} </p>
-                </div>
+              <Grid container direction="column">
+                <Grid item>
+                  <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    TabIndicatorProps={{
+                      style: {
+                        width: 0,
+                      },
+                    }}
+                  >
+                    <Tab label="History" {...a11yProps(0)} disableRipple />
+                    <Tab label="Details" {...a11yProps(1)} disableRipple />
+                  </Tabs>
+                </Grid>
+                <Grid item>
+                  <TabPanel value={value} index={0}>
+                    <div>sdf</div>
+                  </TabPanel>
+                  <TabPanel value={value} index={1}>
+                    <div id="detail-info">
+                      <div id="detail-info-container">
+                        <p id="collection"> Level : {state.item.level} </p>
+                        <p id="name"> Name : {state.item.name} </p>
+                        <p id="description">
+                          Owned by :
+                          <a href={process.env.REACT_APP_POLYGONSCAN_URL + "/address/" + state.item.owner} target="_blank">
+                            {state.item.owner.slice(0, 7) + "..." + state.item.owner.slice(35, 42)}
+                            {/* {state.item.owner} */}
+                          </a>
+                        </p>
+                        <p id="description"> {state.item.description} </p>
+                      </div>
 
-                <div id="detail-controls">
-                  {
-                    state.item.sellType == "sold" ?
-                      <p className="sold">Sold</p>
-                    : state.item.sellType == "listed" ?
-                      <Button
-                        width={isMobile ? "70%" : "70%"}
-                        height="50px"
-                        child={
-                          <div id="button-child">
-                            <FaEthereum size="28px" />
-                            <p id="price">{state.item.price}</p>
-                          </div>
-                        }
-                      ></Button>
-                    :
-                      <Button
-                        width={isMobile ? "70%" : "70%"}
-                        height="50px"
-                        child={
-                          <div id="button-child">
-                            <p id="price">List</p>
-                          </div>
-                        }
-                      ></Button>
-                  }
-
-                  <div className="like-container">
-                    <button className="like" onClick={like}>
-                      {!isLike ? (
-                        <AiOutlineHeart size="45" color="white" />
-                      ) : (
-                        <AiFillHeart
-                          size="45"
-                          style={{
-                            stroke: "-webkit-linear-gradient(to bottom, #38ef7d, #11998e)"
-                          }}
-                          color="#00f5c966"
-                        />
-                      )}
-                    </button>
-                    <p className="like-count">{state.item.vote}</p>
-                  </div>
-                </div>
-              </div>
+                      <div id="detail-controls">
+                        {state.item.sellType == "sold" ? (
+                          <p className="sold">Sold</p>
+                        ) : state.item.sellType == "listed" ? (
+                          <Button
+                            width={isMobile ? "70%" : "70%"}
+                            height="50px"
+                            child={
+                              <div id="button-child">
+                                <FaEthereum size="28px" />
+                                <p id="price">{state.item.price}</p>
+                              </div>
+                            }
+                          ></Button>
+                        ) : (
+                          <Button
+                            width={isMobile ? "70%" : "70%"}
+                            height="50px"
+                            child={
+                              <div id="button-child">
+                                <p id="price">List</p>
+                              </div>
+                            }
+                          ></Button>
+                        )}
+                      </div>
+                    </div>
+                  </TabPanel>
+                </Grid>
+              </Grid>
             </div>
           }
         />

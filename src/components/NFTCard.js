@@ -95,43 +95,11 @@ const NFTCard = ({
           </div>
           <div className="buttons">
             {/* <button className="buy-now">Buy Now</button> */}
-            {
-              sellType == "sold" ?
                 <Button
                   color={Colors.buttons.primary}
                   textContent="Details"
                   onClick={onClick}
                 />
-              : sellType == "listed" ?
-                <Button
-                  color={Colors.buttons.primary}
-                  textContent="Buy Now"
-                  onClick={onClick}
-                />
-              :
-                <Button
-                  color={Colors.buttons.primary}
-                  textContent="List"
-                  onClick={onClick}
-                />
-            }
-
-            <div className="like-container">
-              <button className="like" onClick={like}>
-                {!isLike ? (
-                  <AiOutlineHeart size="30" color="white" />
-                ) : (
-                  <AiFillHeart
-                    size="30"
-                    style={{
-                      stroke: "-webkit-linear-gradient(to bottom, #38ef7d, #11998e)"
-                    }}
-                    color="#00f5c966"
-                  />
-                )}
-              </button>
-              <p className="like-count">{likeCount}</p>
-            </div>
           </div>
         </>
       }

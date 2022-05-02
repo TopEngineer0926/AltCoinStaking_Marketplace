@@ -5,12 +5,11 @@ import CardList from "../components/CardList";
 import { hotDropsData } from "../constants/MockupData";
 
 
-
 const Home = () => {
 
 
   return (
-    <div id="home">
+    <div id="home" style={{display: 'grid', height: 'inherit'}}>
       <Hero list={hotDropsData} />
 
       <p id="card-list-header-text"> Hot Drops </p>

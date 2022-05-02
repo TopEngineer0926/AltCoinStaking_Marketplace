@@ -27,12 +27,12 @@ model-viewer#arDetail{
     height:100%;
 }
 #detail-info{
-    width:40%;
+    /* width:40%; */
     height:100%;
     /* border:1px solid green; */
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    /* justify-content: space-between; */
 }
 
 #detail-info-container{
@@ -215,7 +215,7 @@ p#description{
         /* border:1px solid green; */
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        /* justify-content: space-between; */
     }
     #detail-info-container{
         width:100%;

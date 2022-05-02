@@ -1,0 +1,59 @@
+/*--------------------------
+    Copyright Area  
+----------------------------*/
+.copy-right-one {
+    border-top: 1px solid var(--color-border);
+
+    .copyright-right {
+        margin: 0;
+        display: flex;
+        justify-content: flex-end;
+        
+        // @media #{$md-layout} {
+            margin: 0;
+            padding: 0;
+            justify-content: center;
+        // }
+
+        // @media #{$sm-layout} {
+        //     margin: 0;
+        //     padding: 0;
+        //     justify-content: center;
+        // }
+
+        .social-copyright {
+            list-style: none;
+            display: flex;
+            margin: 0 -5px;
+            padding: 0;
+            li {
+                margin: 0 5px;
+                a {
+                    color: #acacac;
+                    transition: 0.4s;
+                    background: #242435;
+                    display: flex;
+                    justify-content: center;
+                    width: 40px;
+                    height: 40px;
+                    line-height: 40px;
+                    text-align: center;
+                    border-radius: 100%;
+                    
+                    svg {
+                        width: 16px;
+                        transition: 0.4s;
+                    }
+                    
+                    &:hover {
+                        color: white !important;
+                        background: #00a3ff !important;
+                        svg {
+                            color: white;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
